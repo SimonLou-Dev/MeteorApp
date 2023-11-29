@@ -6,9 +6,13 @@
         xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
+        xmlns:neuControls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
+        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:converters="clr-namespace:Avalonia.Themes.Neumorphism.Converters;assembly=Avalonia.Themes.Neumorphism"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:i="https://github.com/projektanker/icons.avalonia"
-        xmlns:controls="clr-namespace:MeteorApp.Controls"
+        xmlns:app="clr-namespace:MeteorApp"
 
 
         Icon="/Assets/avalonia-logo.ico"
@@ -20,20 +24,85 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
+    <Window.Resources>
+        <converters:CustomBoxShadowsConverter x:Key="CustomBoxShadowsConverter"/>
+    </Window.Resources>
 
-    <DockPanel Height="450" Width="800">
 
-        <controls:HeadingBar DockPanel.Dock="Top"/>
+    <DockPanel Margin="0" >
+
+        <neuControls:SnackbarHost HostName="Root" DockPanel.Dock="Top" Margin="0" Padding="0">
+            <neuControls:ColorZone Name="PART_AppBarContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                   DockPanel.Dock="Top" assist:ShadowAssist.ShadowDepth="Depth3"
+                                   Margin="0"
+                                   Height="70" Mode="Standard" Background="Transparent" ZIndex="1">
+                <Grid
+                    Height="60"
+                    Margin="0"
+                    ColumnDefinitions="10,300,*, 300,50,10"
+                    RowDefinitions="55"
+                    Background="#FF2E2E2E"
+                >
+
+                    <Menu Grid.Column="1" VerticalAlignment="Center">
+                        <MenuItem Header="aperçu" Icon="{icons:MaterialIconExt Abacus, Size=50}" Foreground="DarkOrange" Command="{Binding NavigateOverview}"/>
+                        <MenuItem Header="test" Icon="{icons:MaterialIconExt ContentCut, Size=20}" Foreground="DarkOrange"/>
+                        <MenuItem Header="test" Icon="{icons:MaterialIconExt ContentCut, Size=20}" Foreground="DarkOrange"/>
+                    </Menu>
 
 
-        <rxui:RoutedViewHost Router="{Binding Router}">
-            <rxui:RoutedViewHost.DefaultContent>
-                <TextBlock> juste par défaut</TextBlock>
-            </rxui:RoutedViewHost.DefaultContent>
-            <rxui:RoutedViewHost.ViewLocator>
+                    <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                        <AutoCompleteBox Width="275" Height="40" Watermark="Entrez le nom d'une ville" Foreground="#aeea00"> </AutoCompleteBox>
+                    </StackPanel>
 
-            </rxui:RoutedViewHost.ViewLocator>
-        </rxui:RoutedViewHost>
+
+                    <Button Grid.Column="4" Width="45" Height="45" >
+                        <icons:MaterialIcon Kind="Search" Width="25" Height="25" Foreground="#aeea00" Classes="Accent"/>
+                    </Button>
+
+
+
+                </Grid>
+
+
+            </neuControls:ColorZone>
+
+
+
+        </neuControls:SnackbarHost>
+
+
+
+
+        <ScrollViewer
+            HorizontalContentAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            HorizontalScrollBarVisibility="Disabled">
+            <rxui:RoutedViewHost Router="{Binding Router}">
+                <rxui:RoutedViewHost.DefaultContent>
+                    <StackPanel>
+
+
+                        <neuControls:SkiaText Margin="10" Width="850" Height="125" Stretch="None" FontFamily="avares://Neumorphism.Avalonia.Demo/Assets/Fonts/CocogoosePro-trial.ttf" Text="MeteorApp" FontSize="80" ClipToBounds="True" Fill="{DynamicResource MaterialDesignPaper}" Stroke="DarkOrange" StrokeThickness="2">
+                            <neuControls:SkiaGeometry.BoxShadow>
+                                <MultiBinding Converter="{StaticResource CustomBoxShadowsConverter}">
+                                    <DynamicResource ResourceKey="BoxShadowsTemplate" />
+                                    <DynamicResource ResourceKey="MaterialDesignShadowLight" />
+                                    <DynamicResource ResourceKey="MaterialDesignShadowDark" />
+                                </MultiBinding>
+                            </neuControls:SkiaGeometry.BoxShadow>
+                        </neuControls:SkiaText>
+
+
+                    </StackPanel>
+                </rxui:RoutedViewHost.DefaultContent>
+                <rxui:RoutedViewHost.ViewLocator>
+                    <app:AppViewLocator/>
+
+                </rxui:RoutedViewHost.ViewLocator>
+            </rxui:RoutedViewHost>
+        </ScrollViewer>
+
 
     </DockPanel>
 

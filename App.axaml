@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="MeteorApp.App"
              xmlns:local="using:MeteorApp"
-             RequestedThemeVariant="Default"
+             xmlns:themes="clr-namespace:Avalonia.Themes.Neumorphism;assembly=Avalonia.Themes.Neumorphism"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:i="https://github.com/projektanker/icons.avalonia">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -11,7 +12,8 @@
     </Application.DataTemplates>
   
     <Application.Styles>
-        <FluentTheme />
-        <StyleInclude Source="/Controls/HeadingBar.axaml" />
+        <themes:NeumorphismTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
+        <materialIcons:MaterialIconStyles />
+        <StyleInclude Source="Styles/MeteorAppXamlDisplay.axaml" />
     </Application.Styles>
 </Application>
