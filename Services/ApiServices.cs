@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -27,18 +28,20 @@ public class ApiServices
         return client.GetAsync(url);
     }
 
-    protected Task<HttpResponseMessage> getAsyncWeatherApi(string endpoint, Dictionary<string, string> parameters)
+    public static Task<String> getAsyncWeatherApi(Dictionary<string, string> parameters)
     {
-        var builder = new UriBuilder("https://api.openweathermap.org/data/2.5/weather");
+        var builder = new UriBuilder("https://api.open-meteo.com/v1/forecast");
         var query = HttpUtility.ParseQueryString(builder.Query);
-        query["appid"] = GeoApiKey;
+        parameters.Add("timezone","Europe/Berlin");
         foreach (var parameter in parameters)
         {
             query[parameter.Key] = parameter.Value;
         }
-        builder.Query = query.ToString();
+        builder.Query = query.ToString().Replace("%2c", ".");
         string url = builder.ToString();
-        return client.GetAsync(url);
+        var response = client.GetAsync(url).Result;
+
+        return  response.Content.ReadAsStringAsync();
     }
 
 

@@ -14,8 +14,11 @@ public partial class OverviewView : ReactiveUserControl<OverviewViewModel>
 
     public OverviewView()
     {
-        this.WhenActivated(disposables => { });
+        this.WhenActivated(disposables =>
+        { });
         AvaloniaXamlLoader.Load(this);
+        this.InitializeComponent();
+        DataContext = new OverviewViewModel();
     }
 
     private void AttachDevTools()
