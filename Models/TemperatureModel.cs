@@ -18,6 +18,9 @@ public class TemperatureModel
 
     public TemperatureModel loadFromApi(double lat, double lon, int forecast_days = 3)
     {
+        this.temperature = new double[forecast_days * 24];
+        this.dateTime = new string[forecast_days * 24];
+
         Dictionary<string, string> parameters = new Dictionary<string, string>();
         parameters.Add("latitude",  NumberUtils.doubleToString(lat));
         parameters.Add("longitude",  NumberUtils.doubleToString(lat));
@@ -28,16 +31,15 @@ public class TemperatureModel
 
         TemperatureJson? temperatureJson = JsonSerializer.Deserialize<TemperatureJson>(JsonRslt);
 
-
         int arrayLength = temperatureJson.hourly.temperature_2m.Length;
 
 
         for (int i = 0; i < arrayLength; i++)
         {
 
-            //Console.WriteLine((string) DateTime.Parse(temperatureJson.hourly.time[i]));
             this.temperature[i] = (double) temperatureJson.hourly.temperature_2m[i];
-            this.dateTime[i] = temperatureJson.hourly.time[i];
+            this.dateTime[i] = DateTime.Parse(temperatureJson.hourly.time[i]).ToString("dd HH:mm");
+
 
         }
 

@@ -77,7 +77,13 @@ public class OverviewViewModel :ViewModelBase, IRoutableViewModel
 
         reloadApi = ReactiveCommand.Create(refreshApi);
         TemperatureModel Temperatures = new TemperatureModel().loadFromApi(52.52, 13.41);
+        TempSeries.SetValue(new LineSeries<double>
+        {
+            Values = new double[] { 12, 1, 30, 5, 3, 4, 6 },
+            Name = "Temperature",
 
+            Fill = null
+        }, 0);
 
 
 
@@ -96,16 +102,6 @@ public class OverviewViewModel :ViewModelBase, IRoutableViewModel
         Console.WriteLine("After");
     }
 
-    private string[] dateTimeToString(DateTime[] times)
-    {
-        string[] stringTimes = new string[times.Length];
 
-        for (int i = 0; i < times.Length; i++)
-        {
-            stringTimes[i] = times[i].ToString("dd HH:mm");
-        }
-
-        return stringTimes;
-    }
 
 }
