@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
+using Avalonia.Themes.Neumorphism;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.VisualElements;
@@ -13,89 +19,99 @@ using SkiaSharp;
 
 namespace MeteorApp.ViewModels;
 
-public class OverviewViewModel :ViewModelBase, IRoutableViewModel
+public partial class OverviewViewModel : ViewModelBase
 {
-    public string? UrlPathSegment { get; }
-    public IScreen HostScreen { get; }
-
-    public OverviewViewModel(IScreen screen)
-    {
-        HostScreen = screen;
-        UrlPathSegment = "Overview";
-    }
-
-    public ReactiveCommand<Unit, Unit> reloadApi { get; }
 
 
+    private readonly Random _random = new();
 
-    public ISeries[] _TempSeries =
-    {
-        new LineSeries<double>
-        {
-            Values = new double[] { 2, 1, 3, 5, 3, 4, 6 },
-            Name = "Temperature",
+    private ObservableCollection<ObservableValue> _temperatureValues;
 
-            Fill = null
-        }
-    };
+    public ObservableCollection<ObservableValue> DateTimeValues;
 
-    public ISeries[] TempSeries
-    {
-        get => _TempSeries;
-        set => this.RaiseAndSetIfChanged(ref _TempSeries, value);
-    }
+    public ObservableCollection<ISeries> TempSeries { get; set; }
 
-    public Axis[] _TodayXAxes  =
-    {
-        new Axis()
-        {
-            Name = "Heure",
-            Labels = new string[] { "00h", "01h", "02h", "03h", "04h", "05h", "06h", "07h" }
-        }
-    };
+    public Axis[] DateTimeSeries { get; set; }
 
-    public Axis[] TodayXAxes
-    {
-        get => _TodayXAxes;
-        set => this.RaiseAndSetIfChanged(ref _TodayXAxes, value);
-    }
 
     public LabelVisual TempTitle { get; set; } =
         new LabelVisual
         {
-            Text = "Prévision température de la journée",
+            Text = "Prévision température des 72 prochaines heures",
             TextSize = 25,
-            Padding = new LiveChartsCore.Drawing.Padding(15),
-            Paint = new SolidColorPaint(SKColors.DarkSlateGray)
+            Paint = new SolidColorPaint(SKColors.DarkOrange)
         };
+
+    public Axis[] YAxis { get; set; }
+
 
 
     public OverviewViewModel()
     {
 
-        Console.WriteLine("C'est tout bon");
+        _temperatureValues = new ObservableCollection<ObservableValue>();
 
-        reloadApi = ReactiveCommand.Create(refreshApi);
-        TemperatureModel Temperatures = new TemperatureModel().loadFromApi(52.52, 13.41);
-        TempSeries.SetValue(new LineSeries<double>
+        TempSeries = new ObservableCollection<ISeries>
         {
-            Values = new double[] { 12, 1, 30, 5, 3, 4, 6 },
-            Name = "Temperature",
+            new LineSeries<ObservableValue>
+            {
+                Values = _temperatureValues,
+                Name = "Temperature",
+                Fill = new SolidColorPaint(SKColors.DarkSeaGreen),
+                Stroke = null,
+                GeometryFill = null,
+                GeometryStroke = null
+            }
 
-            Fill = null
-        }, 0);
+        };
+
+        string[] labels = new string[72];
+        for (int i = 0; i < 72; i++)
+        {
+            labels[i] = DateTime.Now.AddHours(i).ToString("dd HH:mm");
+        }
 
 
 
+        DateTimeSeries = new Axis[]
+        {
+            new Axis
+            {
+                Labels = labels,
+
+                LabelsPaint = new SolidColorPaint(SKColors.MediumPurple)
+            }
+
+        };
+
+        YAxis = new Axis[]
+        {
+            new Axis
+            {
+                LabelsPaint = new SolidColorPaint(SKColors.MediumPurple)
+            }
+
+        };
+
+        reloadApi();
 
 
 
 
     }
-
-    public void refreshApi()
+    [RelayCommand]
+    public void reloadApi()
     {
         Console.WriteLine("Call");
+
+        TemperatureModel temperatures = new TemperatureModel().loadFromApi(52.52, 13.41);
+        temperatures.temperature.ToList().ForEach(x => _temperatureValues.Add(new ObservableValue(x)));
+
+
+
+
+
+
 
 
 

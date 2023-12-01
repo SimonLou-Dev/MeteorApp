@@ -1,23 +1,38 @@
-﻿using System.Reactive;
-using ReactiveUI;
+﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
 
 namespace MeteorApp.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase, IScreen
+
+public partial class MainWindowViewModel : ObservableObject
 {
 
-    public RoutingState Router { get; } = new RoutingState();
-
-    public ReactiveCommand<Unit, IRoutableViewModel> NavigateOverview { get; }
-
-    public MainWindowViewModel()
+    private readonly ViewModelBase[] Pages =
     {
-        NavigateOverview = ReactiveCommand.CreateFromObservable(() => Router.Navigate.Execute(new OverviewViewModel(this)));
+        new WelcomeViewModel(),
+        new OverviewViewModel(),
+    };
+
+    [ObservableProperty]
+    private ViewModelBase _currentPage;
+
+    [RelayCommand]
+    public void NavigateOverview()
+    {
+        Console.WriteLine("Clicked");
+        CurrentPage = Pages[1];
+
     }
 
 
 
+    public MainWindowViewModel()
+    {
+        CurrentPage = Pages[0];
 
-    public string Greeting => "Welcome to Avalonia!";
+    }
+
 }
 

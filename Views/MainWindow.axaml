@@ -79,29 +79,11 @@
             HorizontalContentAlignment="Stretch"
             HorizontalAlignment="Stretch"
             HorizontalScrollBarVisibility="Disabled">
-            <rxui:RoutedViewHost Router="{Binding Router}">
-                <rxui:RoutedViewHost.DefaultContent>
-                    <StackPanel>
+            <StackPanel>
+                <TransitioningContentControl Content="{Binding CurrentPage}"/>
 
+            </StackPanel>
 
-                        <neuControls:SkiaText Margin="10" Width="850" Height="125" Stretch="None" FontFamily="avares://Neumorphism.Avalonia.Demo/Assets/Fonts/CocogoosePro-trial.ttf" Text="MeteorApp" FontSize="80" ClipToBounds="True" Fill="{DynamicResource MaterialDesignPaper}" Stroke="DarkOrange" StrokeThickness="2">
-                            <neuControls:SkiaGeometry.BoxShadow>
-                                <MultiBinding Converter="{StaticResource CustomBoxShadowsConverter}">
-                                    <DynamicResource ResourceKey="BoxShadowsTemplate" />
-                                    <DynamicResource ResourceKey="MaterialDesignShadowLight" />
-                                    <DynamicResource ResourceKey="MaterialDesignShadowDark" />
-                                </MultiBinding>
-                            </neuControls:SkiaGeometry.BoxShadow>
-                        </neuControls:SkiaText>
-
-
-                    </StackPanel>
-                </rxui:RoutedViewHost.DefaultContent>
-                <rxui:RoutedViewHost.ViewLocator>
-                    <app:AppViewLocator/>
-
-                </rxui:RoutedViewHost.ViewLocator>
-            </rxui:RoutedViewHost>
         </ScrollViewer>
 
 

@@ -15,11 +15,15 @@ public class TemperatureModel
     public double[] temperature { get; set; }
     public string[] dateTime { get; set; }
 
+    public int numberOfValue = 0;
+
 
     public TemperatureModel loadFromApi(double lat, double lon, int forecast_days = 3)
     {
-        this.temperature = new double[forecast_days * 24];
-        this.dateTime = new string[forecast_days * 24];
+        this.numberOfValue = forecast_days * 24;
+
+        this.temperature = new double[this.numberOfValue];
+        this.dateTime = new string[this.numberOfValue];
 
         Dictionary<string, string> parameters = new Dictionary<string, string>();
         parameters.Add("latitude",  NumberUtils.doubleToString(lat));

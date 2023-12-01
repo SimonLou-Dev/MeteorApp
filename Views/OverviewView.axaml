@@ -22,26 +22,28 @@
     <Grid
         RowDefinitions="40,500,40,500"
         ColumnDefinitions="40,*,40,*,40"
-        Background="Orange"
         >
-        <neuControls:Card Theme="{StaticResource CardOutset}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
+        <neuControls:Card Theme="{StaticResource CardOutset}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3">
             <StackPanel Margin="0,0">
                 <lvc:CartesianChart
                     Series="{Binding TempSeries}"
                     Title="{Binding TempTitle}"
-                    XAxes="{Binding TodayXAxes}"
-                    MinWidth="350"
-                    MinHeight="300"
+                    XAxes="{Binding DateTimeSeries}"
+                    YAxes="{Binding YAxis}"
+                    MinWidth="700"
+                    ZoomMode="X"
+                    MinHeight="450"
                 />
-                <Button Command="{Binding reloadApi}">Call</Button>
             </StackPanel>
 
         </neuControls:Card>
-        <neuControls:Card Theme="{StaticResource CardOutset}" VerticalAlignment="Top" Grid.Column="3" Grid.Row="1">
+        <neuControls:Card Theme="{StaticResource CardOutset}" VerticalAlignment="Top" Grid.Column="3" Grid.Row="3">
             <StackPanel Margin="0,0">
                 <lvc:CartesianChart
                     Series="{Binding TempSeries}"
                     Title="{Binding TempTitle}"
+                    XAxes="{Binding DateTimeSeries}"
+                    YAxes="{Binding YAxis}"
                     MinWidth="350"
                     MinHeight="300"
                 />

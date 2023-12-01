@@ -3,20 +3,20 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using MeteorApp.ViewModels;
-using ReactiveUI;
 
 namespace MeteorApp.Views;
 
-public partial class OverviewView : UserControl
+public partial class WelcomeView : UserControl
 {
 
 
 
-    public OverviewView()
+    public WelcomeView()
     {
-        this.InitializeComponent();
-        DataContext = new OverviewViewModel();
+        InitializeComponent();
+        DataContext = new WelcomeViewModel();
     }
+
 
     private void AttachDevTools()
     {

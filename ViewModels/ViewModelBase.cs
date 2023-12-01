@@ -1,20 +1,10 @@
 ﻿using System.Reactive.Disposables;
+using CommunityToolkit.Mvvm.ComponentModel;
 using ReactiveUI;
 
 namespace MeteorApp.ViewModels;
 
-public class ViewModelBase : ReactiveObject, IActivatableViewModel
+public class ViewModelBase : ObservableObject
 {
-    public ViewModelActivator Activator { get; }
 
-    public ViewModelBase()
-    {
-        Activator = new ViewModelActivator();
-        this.WhenActivated((CompositeDisposable disposables) =>
-        {
-            Disposable
-                .Create(() => { })
-                .DisposeWith(disposables);
-        });
-    }
 }
