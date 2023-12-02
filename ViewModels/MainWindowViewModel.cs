@@ -1,13 +1,16 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MeteorApp.Utils;
 
 
 namespace MeteorApp.ViewModels;
 
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ViewModelBase
 {
+
+    public NeuColors neuColors { get; set; } = new NeuColors();
 
     private readonly ViewModelBase[] Pages =
     {

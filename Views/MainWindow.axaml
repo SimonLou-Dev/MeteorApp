@@ -13,6 +13,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:i="https://github.com/projektanker/icons.avalonia"
         xmlns:app="clr-namespace:MeteorApp"
+        xmlns:utils="clr-namespace:MeteorApp.Utils"
 
 
         Icon="/Assets/avalonia-logo.ico"
@@ -29,7 +30,9 @@
     </Window.Resources>
 
 
-    <DockPanel Margin="0" >
+    <DockPanel Margin="0"
+               Background="{Binding NeuBackground}"
+               >
 
 
         <neuControls:SnackbarHost HostName="Root" DockPanel.Dock="Top" Margin="0" Padding="0">
@@ -42,13 +45,13 @@
                     Margin="0"
                     ColumnDefinitions="10,300,*, 300,50,10"
                     RowDefinitions="55"
-                    Background="#FF2E2E2E"
+                    Background="{Binding NeuBackgroundVar}"
                 >
 
                     <Menu Grid.Column="1" VerticalAlignment="Center">
-                        <MenuItem Header="aperçu" Icon="{icons:MaterialIconExt Abacus, Size=50}" Foreground="DarkOrange" Command="{Binding NavigateOverview}"/>
-                        <MenuItem Header="test" Icon="{icons:MaterialIconExt ContentCut, Size=20}" Foreground="DarkOrange"/>
-                        <MenuItem Header="test" Icon="{icons:MaterialIconExt ContentCut, Size=20}" Foreground="DarkOrange"/>
+                        <MenuItem Header="aperçu" Icon="{icons:MaterialIconExt Abacus, Size=50}" Foreground="{Binding NeuPrimary}" Command="{Binding NavigateOverview}"/>
+                        <MenuItem Header="détails" Icon="{icons:MaterialIconExt ContentCut, Size=20}" Foreground="{Binding NeuPrimary}"/>
+                        <MenuItem Header="prévisions" Icon="{icons:MaterialIconExt ContentCut, Size=20}" Foreground="{Binding NeuPrimary}"/>
                     </Menu>
 
 

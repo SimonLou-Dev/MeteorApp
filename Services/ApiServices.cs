@@ -31,15 +31,33 @@ public class ApiServices
     public static Task<String> getAsyncWeatherApi(Dictionary<string, string> parameters)
     {
         var builder = new UriBuilder("https://api.open-meteo.com/v1/forecast");
-        var query = HttpUtility.ParseQueryString(builder.Query);
         parameters.Add("timezone","Europe/Berlin");
+
+        string urlToCall = builder.ToString();
+
+
         foreach (var parameter in parameters)
         {
-            query[parameter.Key] = parameter.Value;
+            if(urlToCall == builder.ToString())
+            {
+                urlToCall += "?";
+            }
+            else
+            {
+                urlToCall += "&";
+            }
+
+            if(parameter.Value == "latitude" || parameter.Value == "longitude")
+            {
+                urlToCall += parameter.Value + "=" + parameter.Key.Replace(",",".");
+                continue;
+            }
+
+            urlToCall += parameter.Key + "=" + parameter.Value;
+
         }
-        builder.Query = query.ToString().Replace("%2c", ".");
-        string url = builder.ToString();
-        var response = client.GetAsync(url).Result;
+
+        var response = client.GetAsync(urlToCall).Result;
 
         return  response.Content.ReadAsStringAsync();
     }
